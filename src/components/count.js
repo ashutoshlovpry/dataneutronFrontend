@@ -26,7 +26,7 @@ const GetAllCountsComponent = (props) => {
           <li key={index}>{count.operation}: {count.count}</li>
         ))}
       </ul>
-      <p id="total-count">Total Count for both: {totalCount}</p>
+      <p id="total-count">Total Count for Update and Create API: {totalCount}</p>
     </div>
   );
 };
