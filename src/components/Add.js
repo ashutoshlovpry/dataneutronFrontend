@@ -13,7 +13,10 @@ const Add = () => {
   const [userList, setUserList] = useState([])
   const [addData, SetAddData] = useState([])
   const [updateData,setUpdatedata]=useState([])
+  const [loader,setLoader]=useState(false)
+
   const handleSubmit = async (e) => {
+    setLoader(true)
     var email = formData.email.trim();
 
     // Regular expression for basic email validation
@@ -25,11 +28,11 @@ const Add = () => {
     axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/create-user`, formData)//execution time 26ms
       .then(response => {
         SetAddData(response.data)
-        console.log('Server response:', response.data);
       })
       .catch(error => {
         console.error('Error:', error);
-      });
+      })
+      .finally(()=>setLoader(false));
 
 
   }
@@ -60,6 +63,7 @@ const Add = () => {
 
   }
   const update = () => {
+    setLoader(true)
     axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/update-user/${userId}`, formData)//execution time 27ms
       .then(response => {
         setUpdatedata(response.data)
@@ -68,7 +72,9 @@ const Add = () => {
       .catch(error => {
         console.error('Error updating data:', error);
         // Handle error, e.g., show an error message to the user
-      });
+      })
+      .finally(()=>setLoader(false));
+      ;
   }
   return (
     <>
@@ -84,7 +90,8 @@ const Add = () => {
         />
       </div>
 
-      <button className="btn btn-primary" onClick={isEdit ? update : handleSubmit}>{isEdit ? 'Update user' : 'Add user'}</button>
+      <button className="btn btn-primary" onClick={isEdit ? update : handleSubmit}>{ 
+     loader?"Loading...": isEdit ? 'Update user' : 'Add user'}</button>
       <br />
       <ul className="list-group col-md-6">
         {userList && userList.map((user, index) => {
