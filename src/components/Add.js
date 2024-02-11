@@ -13,7 +13,7 @@ const Add = () => {
   const [userList, setUserList] = useState([])
   const [addData, SetAddData] = useState([])
   const [updateData,setUpdatedata]=useState([])
-  const [loader,setLoader]=useState(false)
+  const [loader,setLoader]=useState(true)
 
   const handleSubmit = async (e) => {
     setLoader(true)
@@ -44,7 +44,8 @@ const Add = () => {
       })
       .catch(error => {
         console.error('Error:', error);
-      });
+      })
+      .finally(()=>setLoader(false));
 
   }, [addData,updateData])
   const handleInputChange = (e) => {
@@ -93,7 +94,7 @@ const Add = () => {
       <button className="btn btn-primary" onClick={isEdit ? update : handleSubmit}>{ 
      loader?"Loading...": isEdit ? 'Update user' : 'Add user'}</button>
       <br />
-      <ul className="list-group col-md-6">
+            {loader ?"Loading": <ul className="list-group col-md-6">
         {userList && userList.map((user, index) => {
           return (<>
             <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
@@ -107,6 +108,7 @@ const Add = () => {
           </>)
         })}
       </ul>
+}
       <br />
       <GetAllCountsComponent addData={addData} updateData={updateData} />
     </>
